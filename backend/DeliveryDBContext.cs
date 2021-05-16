@@ -5,6 +5,10 @@ namespace Bushware
 {
     public class DeliveryDBContext : DbContext
     {
+        public DeliveryDBContext(DbContextOptions<DeliveryDBContext> options)
+            : base(options)
+        { }
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
 
@@ -29,7 +33,6 @@ namespace Bushware
         public int Id { get; set; }
         public Customer Customer { get; set; }
         public string City { get; set; }
-        public string Address { get; set; }
         public string ZipCode { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
