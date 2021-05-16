@@ -32,9 +32,7 @@ export default function Register() {
 
 			<div className={styles.flex}>
 				<main className={styles.main}>
-					<h1 className={styles.title}>
-						Registration to <a href="https://nextjs.org">Bushware</a>
-					</h1>
+					<h1 className={styles.title}>Create an account</h1>
 
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<div className={styles.field}>

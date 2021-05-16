@@ -37,6 +37,10 @@ class Api {
 		);
 		console.log(await res.text());
 	}
+
+	get signedIn() {
+		return this._token !== undefined;
+	}
 }
 
 export let api = new Api();
