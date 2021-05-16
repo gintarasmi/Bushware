@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +37,12 @@ namespace Bushware
                                .AllowAnyHeader()
                                .AllowAnyMethod());
             });
+
+            services.AddDbContext<DeliveryDBContext>(opt =>
+                                               opt.UseSqlServer(@"Server = tcp:delivery - server.database.windows.net, 1433; " +
+                                                "Initial Catalog=delivery_db;Persist Security Info=False;User ID=delivery_admin;" +
+                                                "Password=Bushware123;MultipleActiveResultSets=False;Encrypt=True;" +
+                                                "TrustServerCertificate=False;Connection Timeout=30;"));
 
             services.AddControllers();
 
