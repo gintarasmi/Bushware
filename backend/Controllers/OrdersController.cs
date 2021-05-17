@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Bushware.Controllers
 {
@@ -43,14 +44,21 @@ namespace Bushware.Controllers
         [HttpGet("ByCustomerId/{id}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrderByCustomerId(int id)
         {
-            var order = await _context.Orders.Where(o => o.Customer.Id == id).ToListAsync();
+            var orders = await _context.Orders.Where(o => o.CustomerId == id).ToListAsync();
+            string dateTimeRegex = @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}";
 
-            if (order == null)
+            if (orders == null)
             {
                 return NotFound();
             }
 
-            return order;
+            foreach(var order in orders)
+            {
+                if(Regex.IsMatch(order.EstDeliveryDate, dateTimeRegex)){
+                    order.EstDeliveryDate = order.EstDeliveryDate.Replace('T', ' ');
+                }
+            }
+            return orders;
         }
 
         // PUT: api/Orders/5

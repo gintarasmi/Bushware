@@ -25,13 +25,12 @@ namespace Bushware
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public List<Order> Orders { get; } = new List<Order>();
     }
 
     public class Order
     {
         public int Id { get; set; }
-        public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Street { get; set; }
@@ -40,4 +39,5 @@ namespace Bushware
         public string Status { get; set; }
         public string EstDeliveryDate { get; set; }
     }
+
 }
