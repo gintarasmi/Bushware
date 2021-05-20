@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bushware
 {
@@ -26,6 +27,8 @@ namespace Bushware
         public string Email { get; set; }
         public string Password { get; set; }
         public List<Order> Orders { get; } = new List<Order>();
+        [Timestamp]
+        public byte[] VersionId { get; set; }
     }
 
     public class Order
@@ -39,5 +42,7 @@ namespace Bushware
         public string PhoneNumber { get; set; }
         public string Status { get; set; }
         public string EstDeliveryDate { get; set; }
+        [Timestamp]
+        public byte[] VersionId { get; set; }
     }
 }
