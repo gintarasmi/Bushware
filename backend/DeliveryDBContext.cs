@@ -34,7 +34,7 @@ namespace Bushware
     public class Order
     {
         public int Id { get; set; }
-        public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Street { get; set; }
@@ -45,4 +45,5 @@ namespace Bushware
         [Timestamp]
         public byte[] VersionId { get; set; }
     }
+
 }

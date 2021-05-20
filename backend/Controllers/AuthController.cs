@@ -9,11 +9,14 @@ namespace Bushware.Controllers
     [Route("api/[controller]/[action]")]
     public class AuthController : ControllerBase
     {
+        private readonly DeliveryDBContext _context;
+
         private readonly IJwtService _jwt;
 
-        public AuthController(IJwtService jwt)
+        public AuthController(IJwtService jwt, DeliveryDBContext context)
         {
             _jwt = jwt;
+            _context = context;
         }
 
         public record LoginRequest(string email, string password);
@@ -22,7 +25,7 @@ namespace Bushware.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginRequest req)
         {
-            using var ctx = new DeliveryDBContext();
+            using var ctx = _context;
             var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.email);
             if (cust == null || cust.Password != req.password)
             {
@@ -56,7 +59,7 @@ namespace Bushware.Controllers
             if (req.Email.Length > 256 || !req.Email.Contains('@'))
                 return BadRequest("Invalid email");
 
-            using var ctx = new DeliveryDBContext();
+            using var ctx = _context;
 
             var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.Email);
 
