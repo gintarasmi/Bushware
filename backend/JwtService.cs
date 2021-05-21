@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Bushware
 
         public BasicJwtService(byte[] signingCredentials, string issuer)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             _signingCredentials = new SymmetricSecurityKey(signingCredentials);
             _issuer = issuer;
         }
@@ -33,6 +36,7 @@ namespace Bushware
             var claims = new List<Claim>
             {
                 new Claim(JwtClaimTypes.Subject, info.Id.ToString()),
+                new Claim(JwtClaimTypes.Issuer, _issuer),
                 new Claim(JwtClaimTypes.Role, "user")
             };
 
@@ -42,7 +46,7 @@ namespace Bushware
             var now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, JwtClaimTypes.Subject, JwtClaimTypes.Role),
 
                 Expires = now.AddDays(7),
                 SigningCredentials = new SigningCredentials(
@@ -58,8 +62,11 @@ namespace Bushware
         {
             IssuerSigningKey = _signingCredentials,
             ValidateAudience = false,
+            ValidateIssuer = false,
             ValidateLifetime = true,
             ValidIssuer = _issuer,
+            RoleClaimType = JwtClaimTypes.Role,
+            NameClaimType = JwtClaimTypes.Subject,
         };
     }
 }

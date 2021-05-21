@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bushware.Controllers
 {
@@ -59,6 +59,14 @@ namespace Bushware.Controllers
                 }
             }
             return orders;
+        }
+
+        // GET: api/Orders/MyOrders
+        [HttpGet("MyOrders")]
+        [Authorize(Policy = "user")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetMyOrders()
+        {
+            return await GetOrderByCustomerId(int.Parse(User.Identity.Name));
         }
 
         // PUT: api/Orders/5
