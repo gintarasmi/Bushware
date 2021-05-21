@@ -30,12 +30,26 @@ class Api {
 	}
 
 	async register(name: string, email: string, password: string): Promise<any> {
-		let res = await fetchJson(
+		await fetchJson(
 			`${apiUrl}/Auth/Register`,
 			{ name, email, password },
 			{ method: "POST" }
 		);
-		console.log(await res.text());
+	}
+
+	async getOrders(): Promise<any> {
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/Orders/MyOrders`, {
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		});
+		return await res.json();
+	}
+
+	logout() {
+		this._token = undefined;
+		this._userId = undefined;
 	}
 
 	get signedIn() {
