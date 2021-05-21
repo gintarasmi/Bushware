@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { api } from "./api";
 
 export default function Nav() {
 	return (
@@ -21,7 +22,9 @@ export default function Nav() {
 					<Link href="/findShipmentData">Find shipment data</Link>
 				</div>
 				<button className="border-2 border-black ml-8 bg-white text-black rounded-lg p-2">
-					<Link href="/signOut">Sign out</Link>
+					<Link href="/login" onClick={() => api.logout()}>
+						{api.signedIn ? "Sign out" : "Log in"}
+					</Link>
 				</button>
 			</div>
 		</div>
