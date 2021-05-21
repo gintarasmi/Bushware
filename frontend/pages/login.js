@@ -3,6 +3,7 @@ import styles from "../styles/Auth.module.css";
 import { useForm } from "react-hook-form";
 import { api } from "../components/api.ts";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Login() {
 	const {
@@ -12,10 +13,13 @@ export default function Login() {
 		clearErrors,
 		formState: { errors, isSubmitted, isSubmitSuccessful },
 	} = useForm();
+
+	const router = useRouter();
 	const onSubmit = async (data) => {
 		try {
 			await api.login(data.email, data.password);
 			clearErrors();
+			router.push("/");
 		} catch (e) {
 			setError("submit", { type: "string", message: e.message });
 		}
