@@ -45,19 +45,12 @@ namespace Bushware.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetOrderByCustomerId(int id)
         {
             var orders = await _context.Orders.Where(o => o.CustomerId == id).ToListAsync();
-            string dateTimeRegex = @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}";
 
             if (orders == null)
             {
                 return NotFound();
             }
 
-            foreach(var order in orders)
-            {
-                if(Regex.IsMatch(order.EstDeliveryDate, dateTimeRegex)){
-                    order.EstDeliveryDate = order.EstDeliveryDate.Replace('T', ' ');
-                }
-            }
             return orders;
         }
 
