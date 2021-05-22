@@ -1,28 +1,23 @@
 import React from "react";
 import Link from "next/link";
 import { api } from "./api";
+import styles from '../styles/Home.module.css';
 
 export default function Nav() {
 	return (
-		<div className="py-4 px-8 bg-white text-black flex justify-between">
-			<div className="text-2xl items-center">
-				<Link href="/">Bush delivery</Link>
+		<div className="bg-white text-black flex justify-between">
+			<div className={styles.subtitle}>
+				<Link href="/adminPages">Bush delivery</Link>
 			</div>
-			<div className="flex items-center">
+			<div className="py-4 px-8 flex items-center">
 				<div className="ml-8">
-					<Link href="/editAccounts">Edit accounts</Link>
+					<Link href="/adminPages/editAccounts">Edit accounts</Link>
 				</div>
 				<div className="ml-8">
-					<Link href="/registerACompany">Register a company</Link>
-				</div>
-				<div className="ml-8">
-					<Link href="/manageShipments">Manage shipments</Link>
-				</div>
-				<div className="ml-8">
-					<Link href="/findShipmentData">Find shipment data</Link>
+					<Link href="/adminPages/editShipments">Edit shipments</Link>
 				</div>
 				<button className="border-2 border-black ml-8 bg-white text-black rounded-lg p-2">
-					<Link href="/login" onClick={() => api.logout()}>
+					<Link href="/" onClick={() => api.logout()}>
 						{api.signedIn ? "Sign out" : "Log in"}
 					</Link>
 				</button>

@@ -46,6 +46,31 @@ class Api {
 		});
 		return await res.json();
 	}
+	async getAllOrders(): Promise<any> {
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/Orders`, {
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		});
+		return await res.json();
+	}
+	async getAllCustomers(): Promise<any> {
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/Customers`, {
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		});
+		return await res.json();
+	}
+	async deleteCustomer(id: string): Promise<any> {
+		await fetchJson(
+			`${apiUrl}/Customers/`+id,
+			{ id },
+			{ method: "DELETE" }
+		);
+	}
 
 	logout() {
 		this._token = undefined;

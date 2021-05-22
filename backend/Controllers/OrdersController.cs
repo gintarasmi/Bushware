@@ -119,6 +119,19 @@ namespace Bushware.Controllers
 
             return NoContent();
         }
+        // GET: api/Orders/AllActiveOrders
+        [HttpGet("AllActiveOrders")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetAllActiveOrders()
+        {
+            var activeShipments = await _context.Orders.Where(o => o.Status == "active").ToListAsync();
+
+            if (activeShipments == null)
+            {
+                return NotFound();
+            }
+
+            return activeShipments;
+        }
 
         private bool OrderExists(int id)
         {

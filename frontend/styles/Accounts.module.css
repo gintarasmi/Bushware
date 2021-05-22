@@ -1,0 +1,132 @@
+  
+  @media (max-width: 600px) {
+    .grid {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
+  
+  .subtitle {
+    margin: 0;
+    line-height: 1.15;
+    font-size: 2rem;
+    padding: 1rem 1rem;
+  }
+  
+  .registeredAccountsTable {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+    padding: 1rem 1rem;
+    width: 95%;
+    border-collapse: collapse;
+  }
+  
+  .tableTitle {
+    text-align: left;
+    font-size: 1.2rem;
+    padding-bottom: 8px;
+  }
+  
+  .deleteUserButton {
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: rgb(99, 99, 99);
+    border-color: rgb(99, 99, 99);
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: 0;
+    box-shadow: 3px 3px #999;
+  }
+  
+  .deleteUserButton:hover {
+      background-color: #a10000;
+      box-shadow: 0px 0px rgb(61, 0, 0);
+    }
+  
+  .deleteUserButton:active {
+    background-color: #a10000;
+    box-shadow: 0px 0px rgb(61, 0, 0);
+    transform: translateY(3px) translateX(3px);
+  }
+  
+  .idTitle {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 10%;
+  }
+  
+  .idCol {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 10%;
+  }
+  
+  .nameTitle {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 15%;
+  }
+  
+  .nameCol {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 15%;
+  }
+  
+  .emailTitle {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 25%;
+  }
+  
+  .emailCol {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 25%;
+  }
+  .statusTitle {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 25%;
+    text-align: right;
+  }
+  
+  .statusCol {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 25%;
+    text-align: right;
+  }
+  
+  

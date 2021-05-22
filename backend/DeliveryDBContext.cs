@@ -23,7 +23,7 @@ namespace Bushware
             => options.UseSqlServer(@"Server=tcp:delivery-server.database.windows.net,1433;" +
                 "Initial Catalog=delivery_db;Persist Security Info=False;User ID=delivery_admin;" +
                 "Password=Bushware123;MultipleActiveResultSets=False;Encrypt=True;" +
-                "TrustServerCertificate=False;Connection Timeout=30;");
+                "TrustServerCertificate=True;Connection Timeout=30;");
     }
 
     public class Customer
