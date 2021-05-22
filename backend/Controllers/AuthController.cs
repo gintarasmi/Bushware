@@ -1,3 +1,4 @@
+using Bushware.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Bushware.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginRequest req)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod());
             using var ctx = _context;
             var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.email);
             if (cust == null || cust.Password != req.password)
@@ -41,6 +43,7 @@ namespace Bushware.Controllers
         [AllowAnonymous]
         public IActionResult Register([FromBody] RegistrationRequest req)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod());
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
             if (req.Password.Length < 6)
