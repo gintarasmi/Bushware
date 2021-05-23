@@ -36,11 +36,12 @@ class Api {
     async register(
         name: string,
         email: string,
-        password: string
+        password: string,
+        isCourier: boolean
     ): Promise<any> {
         await fetchJson(
             `${apiUrl}/Auth/Register`,
-            { name, email, password },
+            { name, email, password, isCourier },
             { method: "POST" }
         );
     }
@@ -64,7 +65,7 @@ class Api {
         });
         return await res.json();
     }
-
+  
     logout() {
         this._token = undefined;
         this._userId = undefined;
