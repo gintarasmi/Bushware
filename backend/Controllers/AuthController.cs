@@ -37,7 +37,7 @@ namespace Bushware.Controllers
             return Ok(_jwt.CreateToken(new UserInfo(cust.Id)));
         }
 
-        public record RegistrationRequest(string Name, string Email, string Password);
+        public record RegistrationRequest(string Name, string Email, string Password, bool isCourier);
 
         [HttpPost]
         [AllowAnonymous]
@@ -64,18 +64,36 @@ namespace Bushware.Controllers
 
             using var ctx = _context;
 
-            var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.Email);
-
-            if (cust != null)
-                return BadRequest("User with this email already exists");
-
-            // TODO: password hashing
-            var newCust = ctx.Customers.Add(new Customer()
+            if (!req.isCourier)
             {
-                Name = req.Name,
-                Email = req.Email,
-                Password = req.Password
-            });
+                var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.Email);
+
+                if (cust != null)
+                    return BadRequest("User with this email already exists");
+
+                // TODO: password hashing
+                var newCust = ctx.Customers.Add(new Customer()
+                {
+                    Name = req.Name,
+                    Email = req.Email,
+                    Password = req.Password
+                });
+            }
+            else
+            {
+                var cour = ctx.Couriers.FirstOrDefault(c => c.Email == req.Email);
+
+                if (cour != null)
+                    return BadRequest("Courier with this email already exists");
+
+                // TODO: password hashing
+                var newCour = ctx.Couriers.Add(new Courier()
+                {
+                    Name = req.Name,
+                    Email = req.Email,
+                    Password = req.Password
+                });
+            }
             ctx.SaveChanges();
 
             return Ok();
