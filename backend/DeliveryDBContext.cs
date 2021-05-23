@@ -65,9 +65,7 @@ namespace Bushware
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
-        public int CourierId { get; set; }
-        public Courier Courier { get; set; }
+        public int? CourierId { get; set; }
         public string PickupCity { get; set; }
         public string PickupZipCode { get; set; }
         public string PickupStreet { get; set; }

@@ -1,6 +1,6 @@
 /* Create three columns of equal width */
 .columns {
-    float: left;
+    float: center;
     width: 100%;
     padding: 40px;
 }
@@ -24,18 +24,61 @@
 .price .header {
     background-color: #111;
     color: white;
-    font-size: 70px;
+    font-size: 30px;
+    border-radius: 15px;
 }
 
 /* List items */
 .price li {
     border-bottom: 1px solid #eee;
-    padding: 40px;
+    padding: 20px;
     text-align: center;
 }
 
 /* Grey list item */
 .price .grey {
     background-color: #eee;
-    font-size: 40px;
+    font-size: 30px;
+    border-radius: 15px;
 }
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 2rem;
+  padding: 40px;
+}
+
+.title {
+  text-align: left;
+}
+
+.description {
+  line-height: 1.5;
+  font-size: 2rem;
+  padding: 40px;
+  text-align: center;
+}
+.statusTitle {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 25%;
+    text-align: right;
+  }
+  
+  .statusCol {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 25%;
+    text-align: right;
+  }
