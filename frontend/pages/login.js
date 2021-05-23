@@ -1,7 +1,11 @@
 import LoginComponent from "/components/Login";
+import Nav from "/components/HomeNav";
 
 export default function Login() {
-	return(
-		<LoginComponent successRedirect="/delivery-status"/>
-	);
+  return (
+    <>
+      <Nav />
+      <LoginComponent successRedirect="/delivery-status" />
+    </>
+  );
 }

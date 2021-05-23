@@ -1,3 +1,4 @@
+import Nav from "/components/UserNav";
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import React, { useEffect } from "react";
@@ -27,7 +28,7 @@ export default function deliveryStatus() {
 			<Head>
 				<title>Delivery status page</title>
 			</Head>
-			<h1 className={styles.subtitle}>Bush Delivery</h1>
+			<Nav/>
 			<table className={styles.deliveryStatusTable}>
 				<thead>
 					<tr>
@@ -39,7 +40,7 @@ export default function deliveryStatus() {
 							>
 								New shipment
 							</button>
-							{showModal &&(
+							{showModal && (
 								<>
 									<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
 										<div className="relative w-auto">
