@@ -2,7 +2,6 @@ import Head from "next/head";
 import styles from "../styles/Auth.module.css";
 import { useForm } from "react-hook-form";
 import { api } from "../components/api.ts";
-import { useState } from "react";
 import Link from "next/link";
 
 export default function Register() {
