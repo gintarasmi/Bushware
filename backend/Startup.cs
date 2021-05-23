@@ -66,6 +66,7 @@ namespace Bushware
             {
                 opt.AddPolicy("user", policy => policy.RequireRole("user"));
                 opt.AddPolicy("admin", policy => policy.RequireRole("admin"));
+                opt.AddPolicy("courier", policy => policy.RequireRole("courier"));
             });
         }
 

@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { isRegularExpressionLiteral } from "typescript";
+import { api } from "../components/api";
 
 function tommorow() {
 	let today = new Date();
@@ -20,119 +20,289 @@ function tommorow() {
 	return date;
 }
 
-async function postOrder(data) {
-	let url = "https://localhost:44313/api/Orders";
-	const response = await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	});
-	console.log(JSON.stringify(data));
-	return response;
-}
-
-function orderShipmentForm({ onClickSubmit }) {
-	const { register, handleSubmit } = useForm();
+function orderShipmentForm({onClickSubmit}) {
+	const { register, handleSubmit, setValue} = useForm();
 	const router = useRouter();
 
+	const [servicesPrice, setServicesPrice] = React.useState(0);
+	const [price, setPrice] = React.useState(0);
+
+	const [selectedServices] = React.useState([])
+	const [services, setServices] = React.useState([])
+	const [payments, setPayments] = React.useState([])
+	const [addresses, setAddresses] = React.useState([])
+
+	const [city, setCity] = React.useState('')
+	const [zipCode, setZipCode] = React.useState('')
+	const [street, setStreet] = React.useState('')
+	const [houseNumber, setHouseNumber] = React.useState('')
+
+	useEffect(()=>{
+		register("pickupCity", { required: true })
+		register("pickupZipCode", { required: true })
+		register("pickupStreet", { required: true })
+		register("weight", {required: true})
+		register("pickupHouseNumber", { required: true })
+		register("services")
+	})
+
+	useEffect(async ()=> {
+		setServices(await api.getServices())
+		setPayments(await api.getPayment())
+		setAddresses(await api.getAddresses())
+	}, [])
+
 	const onSubmit = async (data) => {
-		data["customerId"] = 7;
-		data["status"] = "pending";
-		await postOrder(data).then((res) => {
-			if (res.status === 201) {
+		data["price"] = price
+		console.log(JSON.stringify(data))
+		await api.postCustOrder(data).then((res) => {
+			if (res.status === 200) {
 				router.reload();
 			} else console.log(res.status);
 		});
 	};
+
 	const min = tommorow();
-	console.log(min);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
-				<div className="grid grid-cols-1">
-					<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
-						City
-					</label>
-					<input
-						className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-						type="text"
-						placeholder="City"
-						{...register("city", { required: true })}
-					/>
-				</div>
-				<div className="grid grid-cols-1">
-					<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
-						ZIP Code
-					</label>
-					<input
-						className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-						type="text"
-						placeholder="ZIP Code"
-						{...register("zipCode", { required: true })}
-					/>
-				</div>
-			</div>
+		<>
+		<select onChange={(e)=>{  //someone make it pretty, cause i'm dead
+				setCity(addresses[e.target.value].city)
+				setZipCode(addresses[e.target.value].zipCode)
+				setStreet(addresses[e.target.value].street)
+				setHouseNumber(addresses[e.target.value].houseNumber)
+			}}>
+		<option value="" disabled selected>Select your address</option>
+		{addresses.map((address, index) => (
+			<option key={index} value={index}>{address.street}, {address.houseNumber}, {address.city}, {address.zipCode}</option>
+		))}
+		</select>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<div>Pickup Address
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								City
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								name="pickupCity"
+								value={city}
+								placeholder="City"
+								onChange={e=>{
+									setCity(e.target.value)
+									setValue(e.target.value)
+									}}
+							/>
+						</div>
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								ZIP Code
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								name="pickupZipCode"
+								value={zipCode}
+								placeholder="ZIP Code"
+								onChange={e=>{
+									setZipCode(e.target.value)
+									setValue(e.target.value)
+									}}
+							/>
+						</div>
+					</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
-				<div className="grid grid-cols-1">
-					<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
-						Street
-					</label>
-					<input
-						className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-						type="text"
-						placeholder="Street"
-						{...register("street", { required: true })}
-					/>
-				</div>
-				<div className="grid grid-cols-1">
-					<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
-						House number
-					</label>
-					<input
-						className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-						type="text"
-						placeholder="House number"
-						{...register("houseNumber", { required: true })}
-					/>
-				</div>
-			</div>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								Street
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								name="pickupStreet"
+								value={street}
+								placeholder="Street"
+								onChange={e=>{
+									setStreet(e.target.value)
+									setValue(e.target.value)
+									}}
+							/>
+						</div>
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								House number
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								value={houseNumber}
+								name="pickupHouseNumber"
+								placeholder="House number"
+								onChange={e=>{
+									setHouseNumber(e.target.value)
+									setValue(e.target.value)
+									}}
+							/>
+						</div>
+					</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
-				<div className="grid grid-cols-1">
-					<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
-						Phone number
-					</label>
-					<input
-						className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-						type="text"
-						placeholder="Phone number"
-						{...register("phoneNumber", { required: true })}
-					/>
-				</div>
-				<div className="grid grid-cols-1">
-					<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
-						Pickup Date
-					</label>
-					<input
-						type="datetime-local"
-						min={min}
-						className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-						{...register("estDeliveryDate", { required: true })}
-					/>
-				</div>
-			</div>
 
-			<div className="flex items-center justify-center  md:gap-8 gap-4 pt-5 pb-5">
-				<input
-					type="submit"
-					className="w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2"
-				/>
-			</div>
-		</form>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								Pickup Date
+							</label>
+							<input
+								type="datetime-local"
+								min={min}
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								{...register("pickupDate", { required: true })}
+							/>
+						</div>
+					</div>
+				</div>
+				<div>Shipment Address
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								City
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								placeholder="City"
+								{...register("shipmentCity", { required: true })}
+							/>
+						</div>
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								ZIP Code
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								placeholder="ZIP Code"
+								{...register("shipmentZipCode", { required: true })}
+							/>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								Street
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								placeholder="Street"
+								{...register("shipmentStreet", { required: true })}
+							/> 
+						</div>
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								House number
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="text"
+								placeholder="House number"
+								{...register("shipmentHouseNumber", { required: true })}
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div>Package
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								Weight (kg)
+							</label>
+							<input
+								className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+								type="number"
+								min = "0"
+								step = "0.01"
+								onChange={e => {
+									setPrice((parseFloat(e.target.value) + parseFloat(servicesPrice)).toFixed(2))
+									setValue("weight", e.target.value)
+								}}
+								
+							/>
+						</div>
+						<div className="grid grid-cols-1">
+							<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+								Services
+							</label>
+							<div className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+							{services.map((service) =>(
+								<div >
+									<label className="mt-2 flex items-center">
+										<input
+										type="checkbox"
+										value={service.name}
+										onChange={e =>{
+											if(e.target.checked) {
+												setPrice((parseFloat(price) + service.price).toFixed(2))
+												setServicesPrice((parseFloat(servicesPrice)+service.price).toFixed(2))
+												selectedServices.push(e.target.value)
+												console.log(selectedServices)
+											}
+											else {
+												setPrice((parseFloat(price) - service.price).toFixed(2))
+												setServicesPrice((parseFloat(servicesPrice)-service.price).toFixed(2))
+												const index = selectedServices.indexOf(e.target.value)
+												selectedServices.splice(index, 1)
+												console.log(selectedServices)
+											}
+											setValue("services", selectedServices)
+										}}
+										/>
+										<span className="ml-2 font-normal">{service.name} {service.price}€ </span>
+									</label>
+								</div>
+							))}
+							</div>
+						</div>
+							<div className="grid grid-cols-1">
+								<label className="uppercase md:text-sm text-xs text-gray-500 text-light font-semibold">
+									Payment method
+								</label>
+								<div className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+								{payments.map((payment) =>(
+									<div >
+										<label className="mt-2 flex items-center">
+											<input
+											{...register("payment", { required: true })}
+											type="radio"
+											value={payment.id}/>
+											<span className="ml-2 font-normal">{payment.name} </span>
+										</label>
+									</div>
+								))}
+								</div>
+							</div>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mt-5 mx-7">
+							<div className="grid grid-cols-1">
+									Price: {price}€
+								</div>
+							</div>
+						</div>
+				</div>
+
+				<div className="flex items-center justify-center  md:gap-8 gap-4 pt-5 pb-5">
+
+					<input
+						type="submit"
+						className="w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2"
+					/>
+				</div>
+			</form>
+		</>
 	);
 }
 

@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 
-const apiUrl = "https://localhost:5001/api";
+const apiUrl = "https://localhost:44313/api";
 
 export async function fetchJson(
 
@@ -54,15 +54,91 @@ class Api {
         );
     }
 
-  async getOrders(): Promise<any> {
-    if (!this.signedIn) throw new Error("Not logged in");
-    let res = await fetch(`${apiUrl}/Orders/MyOrders`, {
-      headers: {
-        Authorization: `Bearer ${this._token}`,
-      },
-    });
-    return await res.json();
-  }
+	async getOrders(): Promise<any> {
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/Orders/MyOrders`, {
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		});
+		return await res.json();
+	}
+
+	async postOrder(data): Promise<any>{
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/Orders`,{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+		return res;
+	}
+
+
+	async postCustOrder(data): Promise<any>{
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/CustOrder`,{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+		return res;
+	}
+
+	async getCourierOrders(): Promise<any>{
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch (`${apiUrl}/Orders/MyShipments`,{
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		});
+		return await res.json()
+	}
+
+	async acceptOrder(id: number): Promise<any>{
+		if(!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch (`${apiUrl}/AcceptOrder/`+id.toString(),{
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		})
+		return res;
+	}
+
+	async pickedUpDelivery(id: number): Promise<any>{
+		if(!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch (`${apiUrl}/PickedUpOrder/`+id.toString(),{
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		})
+		return res;
+	}
+
+	async deliveredShipment(id: number): Promise<any>{
+		if(!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch (`${apiUrl}/DeliveredOrder/`+id.toString(),{
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		})
+		return res;
+	}
+
+	async getServices(): Promise<any>{
+		let res = await fetch(`${apiUrl}/Services`)
+		return await res.json()
+	}
+
   async getAllOrders(): Promise<any> {
     if (!this.signedIn) throw new Error("Not logged in");
     let res = await fetch(`${apiUrl}/Orders`, {
@@ -81,18 +157,55 @@ class Api {
     });
     return await res.json();
   }
-  async getServices(): Promise<any> {
-        if (!this.signedIn) throw new Error("Not logged in");
-        let res = await fetch(`${apiUrl}/Services`, {
-            headers: {
-                Authorization: `Bearer ${this._token}`,
-            },
-        });
-        return await res.json();
-   }
-  async deleteCustomer(id: string): Promise<any> {
-    await fetchJson(`${apiUrl}/Customers/` + id, { id }, { method: "DELETE" });
-  }
+
+	async getPayment(): Promise<any>{
+		let res = await fetch(`${apiUrl}/Payment`)
+		return await res.json()
+	}
+
+	async getAddressess(): Promise<any>{
+		let res = await fetch(`${apiUrl}/custAddress/MyAddresses`,{
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		})
+		return await res.json();
+	}
+
+	async postAddress(data): Promise<any>{
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/CustAddress`,{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+		return res;
+	}
+
+	async getAddressess(): Promise<any>{
+		let res = await fetch(`${apiUrl}/custAddress/MyAddresses`,{
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+			},
+		})
+		return await res.json();
+	}
+
+	async postAddress(data): Promise<any>{
+		if (!this.signedIn) throw new Error("Not logged in");
+		let res = await fetch(`${apiUrl}/CustAddress`,{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${this._token}`,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+		return res;
+	}
 
   logout() {
     this._token = undefined;
@@ -103,6 +216,7 @@ class Api {
   get signedIn() {
     return this._token !== undefined;
   }
+
 }
 
 export let api = new Api();

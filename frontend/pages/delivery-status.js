@@ -28,7 +28,6 @@ export default function deliveryStatus() {
 			<Head>
 				<title>Delivery status page</title>
 			</Head>
-
 			<Nav/>
 			<table className={styles.deliveryStatusTable}>
 				<thead>
