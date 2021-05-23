@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
+using Bushware.Utilities;
 
 namespace Bushware.Controllers
 {
@@ -23,6 +24,7 @@ namespace Bushware.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             return await _context.Orders.ToListAsync();
         }
 
@@ -30,6 +32,7 @@ namespace Bushware.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             var order = await _context.Orders.FindAsync(id);
 
             if (order == null)
@@ -44,6 +47,7 @@ namespace Bushware.Controllers
         [HttpGet("ByCustomerId/{id}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrderByCustomerId(int id)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             var orders = await _context.Orders.Where(o => o.CustomerId == id).ToListAsync();
 
             if (orders == null)
@@ -59,6 +63,7 @@ namespace Bushware.Controllers
         [Authorize(Policy = "user")]
         public async Task<ActionResult<IEnumerable<Order>>> GetMyOrders()
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             return await GetOrderByCustomerId(int.Parse(User.Identity.Name));
         }
 
@@ -67,6 +72,7 @@ namespace Bushware.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(int id, Order order)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             if (id != order.Id)
             {
                 return BadRequest();
@@ -98,6 +104,7 @@ namespace Bushware.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
@@ -108,6 +115,7 @@ namespace Bushware.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             var order = await _context.Orders.FindAsync(id);
             if (order == null)
             {

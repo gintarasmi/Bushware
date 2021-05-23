@@ -1,0 +1,41 @@
+/* Create three columns of equal width */
+.columns {
+    float: left;
+    width: 100%;
+    padding: 40px;
+}
+
+/* Style the list */
+.price {
+    list-style-type: none;
+    border: 1px solid #eee;
+    margin: 0;
+    padding: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+/* Add shadows on hover */
+.price:hover {
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Pricing header */
+.price .header {
+    background-color: #111;
+    color: white;
+    font-size: 70px;
+}
+
+/* List items */
+.price li {
+    border-bottom: 1px solid #eee;
+    padding: 40px;
+    text-align: center;
+}
+
+/* Grey list item */
+.price .grey {
+    background-color: #eee;
+    font-size: 40px;
+}
