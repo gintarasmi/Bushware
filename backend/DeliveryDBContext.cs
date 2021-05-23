@@ -33,8 +33,6 @@ namespace Bushware
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public List<Order> Orders { get; } = new List<Order>();
-        public List<Address> Addresses { get; } = new List<Address>();
         [Timestamp]
         public byte[] VersionId { get; set; }
     }
@@ -45,7 +43,6 @@ namespace Bushware
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public List<Order> Orders { get; } = new List<Order>();
         [Timestamp]
         public byte[] VersionId { get; set; }
     }
@@ -53,7 +50,6 @@ namespace Bushware
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Street { get; set; }
@@ -65,9 +61,7 @@ namespace Bushware
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
-        public int CourierId { get; set; }
-        public Courier Courier { get; set; }
+        public int? CourierId { get; set; }
         public string PickupCity { get; set; }
         public string PickupZipCode { get; set; }
         public string PickupStreet { get; set; }
@@ -99,5 +93,22 @@ namespace Bushware
         public int Id { get; set; }
         public string Name { get; set; }
         public float Price { get; set; }
+    }
+
+    public class CustOrder
+    {
+        public string pickupCity { get; set; }
+        public string pickupStreet { get; set; }
+        public string pickupHouseNumber { get; set; }
+        public DateTime pickupDate { get; set; }
+        public string shipmentCity { get; set; }
+
+        public string shipmentZipCode { get; set; }
+        public string shipmentStreet { get; set; }
+        public string shipmentHouseNumber { get; set; }
+        public List<string> services { get; set; }
+        public float weight { get; set; }
+        public int payment { get; set; }
+        public float price { get; set; }
     }
 }

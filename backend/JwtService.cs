@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Bushware
 {
-    public record UserInfo(int Id, bool Administrator = false);
+    public record UserInfo(int Id, bool Administrator = false, bool Courier = false);
 
     public interface IJwtService
     {
@@ -42,6 +42,9 @@ namespace Bushware
 
             if (info.Administrator)
                 claims.Add(new Claim(JwtClaimTypes.Role, "admin"));
+
+            if (info.Courier)
+                claims.Add(new Claim(JwtClaimTypes.Role, "courier"));
 
             var now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor

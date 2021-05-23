@@ -27,7 +27,6 @@ export default function deliveryStatus() {
 			<Head>
 				<title>Delivery status page</title>
 			</Head>
-
 			<h1 className={styles.subtitle}>Bush Delivery</h1>
 			<table className={styles.deliveryStatusTable}>
 				<thead>
@@ -40,7 +39,7 @@ export default function deliveryStatus() {
 							>
 								New shipment
 							</button>
-							{showModal ? (
+							{showModal &&(
 								<>
 									<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
 										<div className="relative w-auto">
@@ -64,7 +63,7 @@ export default function deliveryStatus() {
 									</div>
 									<div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
 								</>
-							) : null}
+							)}
 						</th>
 					</tr>
 					<tr>
