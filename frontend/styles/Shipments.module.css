@@ -143,12 +143,12 @@
   padding-bottom: 8px;
 }
 
-.newShipmentButton {
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  font-size: 1.2rem;
+.ShipmentButton {
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 1rem;
   color: white;
   background-color: rgb(99, 99, 99);
   border-color: rgb(99, 99, 99);
@@ -160,9 +160,9 @@
   box-shadow: 3px 3px #999;
 }
 
-.newShipmentButton:hover {background-color: #202020}
+.ShipmentButton:hover {background-color: #202020}
 
-.newShipmentButton:active {
+.ShipmentButton:active {
   background-color: #202020;
   box-shadow: 0px 0px #666;
   transform: translateY(3px) translateX(3px);
