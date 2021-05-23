@@ -56,6 +56,16 @@ class Api {
         return await res.json();
     }
 
+    async getServices(): Promise<any> {
+        // if (!this.signedIn) throw new Error("Not logged in");
+        let res = await fetch(`${apiUrl}/Services`, {
+            headers: {
+                Authorization: `Bearer ${this._token}`,
+            },
+        });
+        return await res.json();
+    }
+  
     logout() {
         this._token = undefined;
         this._userId = undefined;
