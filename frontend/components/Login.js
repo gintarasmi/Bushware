@@ -4,23 +4,25 @@ import { useForm } from "react-hook-form";
 import { api } from "../components/api.ts";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
-export default function Login({ successRedirect }) { 
+export default function Login({ successRedirect }) {
+	let [err, setErr] = useState(undefined);
+
 	const {
 		register,
 		handleSubmit,
-		setError,
-		clearErrors,
-		formState: { errors, isSubmitted, isSubmitSuccessful },
+		formState: { errors },
 	} = useForm();
+
 	const router = useRouter();
+
 	const onSubmit = async (data) => {
 		try {
 			await api.login(data.email, data.password);
-			clearErrors();
 			router.push(successRedirect);
 		} catch (e) {
-			setError("submit", { type: "string", message: e.message });
+			setErr(e.message);
 		}
 	};
 
@@ -66,13 +68,7 @@ export default function Login({ successRedirect }) {
 
 						<input type="submit" className={styles.submit} value="Login" />
 
-						{errors.submit && (
-							<span className={styles.error}>{errors.submit.message}</span>
-						)}
-
-						{isSubmitted && isSubmitSuccessful && (
-							<span className={styles.success}>Successfully logged in!</span>
-						)}
+						{err && <span className={styles.error}>{err}</span>}
 
 						<Link href="/register">Don't have an account?</Link>
 					</form>
