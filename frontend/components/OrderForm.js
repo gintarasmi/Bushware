@@ -46,7 +46,7 @@ function orderShipmentForm({onClickSubmit}) {
 	useEffect(()=>{
 		register("weight", {required: true})
 		register("services")
-	})
+	},[])
 
 	useEffect(async ()=> {
 		setServices(await api.getServices())
@@ -70,9 +70,13 @@ function orderShipmentForm({onClickSubmit}) {
 		<>
 		<select defaultValue={'DEFAULT'} onChange={(e)=>{  //someone make it pretty, cause i'm dead
 				setCity(addresses[e.target.value].city)
+				setValue("pickupCity", addresses[e.target.value].city)
 				setZipCode(addresses[e.target.value].zipCode)
+				setValue("pickupZipCode", addresses[e.target.value].zipCode)
 				setStreet(addresses[e.target.value].street)
+				setValue("pickupStreet", addresses[e.target.value].street)
 				setHouseNumber(addresses[e.target.value].houseNumber)
+				setValue("pickupHouseNumber", addresses[e.target.value].street)
 			}}>
 		<option key='DEFAULT' value="DEFAULT" disabled>Select your address</option>
 		{addresses.map((address, index) => (

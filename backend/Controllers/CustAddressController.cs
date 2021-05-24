@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
+using Bushware.Utilities;
 
 namespace Bushware.Controllers
 {
@@ -19,14 +21,23 @@ namespace Bushware.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Address>>> GetAdresses()
+        {
+            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
+            return await _context.Addresses.ToListAsync();
+        }
+
         [HttpPost]
         [Authorize(Policy = "user")]
         public async Task<ActionResult<Address>> PostCustAddress(Address address)
         {
+            address.CustomerId = int.Parse(User.Identity.Name);
+            Console.WriteLine(address);
             _context.Addresses.Add(address);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = address.Id }, address);
+            return CreatedAtAction("GetAdresses", new { id = address.Id }, address);
         }
 
 
