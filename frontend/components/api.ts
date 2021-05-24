@@ -29,10 +29,10 @@ class Api {
     }
   }
 
-  async login(email: string, password: string): Promise<void> {
+  async login(email: string, password: string, isCourier: boolean): Promise<void> {
     let res = await fetchJson(
       `${apiUrl}/Auth/Login`,
-      { email, password },
+      { email, password, isCourier},
       { method: "POST" }
     );
     this._token = await res.text();
@@ -102,7 +102,7 @@ class Api {
 
 	async acceptOrder(id: number): Promise<any> {
 		if (!this.signedIn) throw new Error("Not logged in");
-		let res = await fetch(`${apiUrl}/AcceptOrder/` + id.toString(), {
+		let res = await fetch(`${apiUrl}/Orders/AcceptOrder/${id}`, {
 			method: "PUT",
 			headers: {
 				Authorization: `Bearer ${this._token}`,
@@ -113,7 +113,7 @@ class Api {
 
 	async pickedUpDelivery(id: number): Promise<any> {
 		if (!this.signedIn) throw new Error("Not logged in");
-		let res = await fetch(`${apiUrl}/PickedUpOrder/` + id.toString(), {
+		let res = await fetch(`${apiUrl}/Orders/PickedUpOrder/${id}`, {
 			method: "PUT",
 			headers: {
 				Authorization: `Bearer ${this._token}`,
@@ -124,7 +124,7 @@ class Api {
 
 	async deliveredShipment(id: number): Promise<any> {
 		if (!this.signedIn) throw new Error("Not logged in");
-		let res = await fetch(`${apiUrl}/DeliveredOrder/` + id.toString(), {
+		let res = await fetch(`${apiUrl}/Orders/DeliveredOrder/${id}`, {
 			method: "PUT",
 			headers: {
 				Authorization: `Bearer ${this._token}`,

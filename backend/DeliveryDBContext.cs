@@ -100,6 +100,7 @@ namespace Bushware
         public string pickupCity { get; set; }
         public string pickupStreet { get; set; }
         public string pickupHouseNumber { get; set; }
+        public string pickupZipCode { get; set; }
         public DateTime pickupDate { get; set; }
         public string shipmentCity { get; set; }
 

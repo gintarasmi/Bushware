@@ -59,12 +59,38 @@ namespace Bushware.Controllers
         }
 
         // GET: api/Orders/MyOrders
+        //[HttpGet("MyOrders")]
+        //[Authorize(Policy = "user")]
+        //public async Task<ActionResult<IEnumerable<Order>>> GetMyOrders()
+        //{
+        //    MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
+        //    return await GetOrderByCustomerId(int.Parse(User.Identity.Name));
+        //}
+
         [HttpGet("MyOrders")]
         [Authorize(Policy = "user")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetMyOrders()
+        public async Task<ActionResult> GetMyOrders()
         {
-            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
-            return await GetOrderByCustomerId(int.Parse(User.Identity.Name));
+            using var ctx = _context;
+            var shipments_query = await (from order in ctx.Orders
+                                         join package in ctx.Packages on order.Package equals package.Id
+                                         join payment in ctx.Payments on order.Payment equals payment.Id
+                                         where order.CustomerId == int.Parse(User.Identity.Name)
+                                         select new
+                                         {
+                                             orderId = order.Id,
+                                             pickupAddress = order.PickupStreet + ' ' + order.PickupHouseNumber + ',' + order.PickupCity + ',' + order.PickupZipCode,
+                                             shipmentAddress = order.ShipmentStreet + ' ' + order.ShipmentHouseNumber + ',' + order.ShipmentCity + ',' + order.ShipmentZipCode,
+                                             pickupDate = order.PickupDate,
+                                             status = order.Status,
+                                             deliveryDate = order.DeliveryDate,
+                                             services = order.Services,
+                                             paymentMethod = payment.Name,
+                                             weight = package.Weight,
+                                             price = package.Price
+                                         }).ToListAsync();
+
+            return new JsonResult(shipments_query);
         }
 
         // PUT: api/Orders/5
@@ -97,118 +123,6 @@ namespace Bushware.Controllers
             }
 
             return NoContent();
-        }
-
-        //Courier API------------------------------------------------------------------------
-        [HttpPut("AcceptOrder/{id}")]
-        [Authorize(Policy="courier")]
-        public async Task<IActionResult> AcceptOrder(int id)
-        {
-            var order = _context.Orders.FirstOrDefault(o => o.Id == id);
-            order.CourierId = int.Parse(User.Identity.Name);
-            order.Status = "Accepted";
-            _context.Entry(order).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpPut("PickedUpOrder/{id}")]
-        [Authorize(Policy = "courier")]
-        public async Task<IActionResult> PickedUpOrder(int id)
-        {
-            var order = _context.Orders.FirstOrDefault(o => o.Id == id);
-            order.Status = "In progress";
-            order.DeliveryDate = order.PickupDate.AddDays(2);
-            _context.Entry(order).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return NoContent();
-        }
-
-        [HttpPut("DeliveredOrder/{id}")]
-        [Authorize(Policy = "courier")]
-        public async Task<IActionResult> DeliveredOrder(int id)
-        {
-            var order = _context.Orders.FirstOrDefault(o => o.Id == id);
-            order.Status = "Done";
-            order.DeliveryDate = DateTime.Now;
-            _context.Entry(order).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return NoContent();
-        }
-
-        [HttpGet("MyShipments")]
-        [Authorize(Policy = "courier")]
-        public async Task<ActionResult> GetMyShipments()
-        {
-            using var ctx = _context;
-            var shipments_query = await (from order in ctx.Orders
-                                   join customer in ctx.Customers on order.CustomerId equals customer.Id
-                                   join package in ctx.Packages on order.Package equals package.Id
-                                   join payment in ctx.Payments on order.Payment equals payment.Id
-                                   where order.CourierId == null || order.CourierId == int.Parse(User.Identity.Name)
-                                   select new
-                                   {
-                                       orderId = order.Id,
-                                       pickupAddress = order.PickupStreet + ' ' + order.PickupHouseNumber + ',' + order.PickupCity + ',' + order.PickupZipCode,
-                                       shipmentAddress = order.ShipmentStreet + ' ' + order.ShipmentHouseNumber + ',' + order.ShipmentCity + ',' + order.ShipmentZipCode,
-                                       pickupDate = order.PickupDate,
-                                       name = customer.Name,
-                                       phoneNumber = customer.PhoneNumber,
-                                       status = order.Status,
-                                       deliveryDate = order.DeliveryDate,
-                                       services = order.Services,
-                                       paymentMethod = payment.Name,
-                                       weight = package.Weight,
-                                       price = package.Price
-                                   }).ToListAsync();
-
-            return new JsonResult(shipments_query);
         }
 
         //Courier API------------------------------------------------------------------------

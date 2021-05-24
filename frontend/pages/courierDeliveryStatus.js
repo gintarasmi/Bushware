@@ -1,51 +1,58 @@
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { api } from "../components/api";
 
+const OK = 204
 
+function getCleanDate(dateTime){
+    return new Date(dateTime).toLocaleString()
+}
 
 async function acceptDelivery(item){
-    await api.acceptOrder(item.id).then((res) =>{
-        if(res.status === 200){
+    await api.acceptOrder(item.orderId).then((res) =>{
+        if(res.status === OK){
             console.log("OK")
         } else console.log(res.status);
     })
 }
 
 async function pickedUpDelivery(item){
-    await api.pickedUpDelivery(item.id)
-        if(res.status === 200){
+    await api.pickedUpDelivery(item.orderId).then((res) =>{
+        if(res.status === OK){
             console.log("OK")
         } else console.log(res.status)
+    })
 }
 
 async function deliveredShipment(item){
-    await api.deliveredShipment(item.id)
-        if(res.status === 200){
+    await api.deliveredShipment(item.orderId).then((res) =>{
+        if(res.status === OK){
             console.log("OK")
         } else console.log(res.status)
+    })
 }
 
 export default function courierDeliveryStatus() {
-    let items = [];
+    const [items, setItems] = useState([]);
+    const router = useRouter();
     let items_done = [];
-    let items_accepted = [];
+    let items_accept = [];
     let items_progress = [];
     let items_pickup = [];
     for (let i in items) {
         if (items[i].status === "Done") 
             items_done.push(items[i]);
         else if (items[i].status === "Accepted") 
-            items_accepted.push(items[i])
+            items_pickup.push(items[i])
         else if (items[i].status === "In progress")
             items_progress.push(items[i]);
-        else items_pickup.push(items[i]);
+        else items_accept.push(items[i]);
     }
 
     useEffect(async () => {
-        items = await api.getCourierOrders();
-        console.log(items);
+        setItems(await api.getCourierOrders())
     }, []);
 
     return (
@@ -93,8 +100,8 @@ export default function courierDeliveryStatus() {
                     </tr>
                 </thead>
                 <tbody id="ShipmentsToAccept">
-                    {items_accepted.map((item) => (
-                        <tr>
+                    {items_accept.map((item) => (
+                        <tr key={item.orderId}>
                             <td className={styles.addressCol}>
                                 {item.name}
                             </td>
@@ -102,7 +109,7 @@ export default function courierDeliveryStatus() {
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.pickupDate}
+                                {getCleanDate(item.pickupDate)}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.pickupAddress}
@@ -117,7 +124,7 @@ export default function courierDeliveryStatus() {
                                 {item.services}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.weight}
+                                {item.weight} kg
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.price} €
@@ -171,7 +178,7 @@ export default function courierDeliveryStatus() {
                 </thead>
                 <tbody id="ShipmentsToPickup">
                     {items_pickup.map((item) => (
-                        <tr>
+                        <tr key={item.orderId}>
                             <td className={styles.addressCol}>
                                 {item.name}
                             </td>
@@ -179,7 +186,7 @@ export default function courierDeliveryStatus() {
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.pickupDate}
+                                {getCleanDate(item.pickupDate)}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.pickupAddress}
@@ -194,7 +201,7 @@ export default function courierDeliveryStatus() {
                                 {item.services}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.weight}
+                                {item.weight} kg
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.price} €
@@ -232,7 +239,7 @@ export default function courierDeliveryStatus() {
                             Services
                         </td>
                         <td className={styles.addressTitle}>
-                            Weight
+                            Weight 
                         </td>
                         <td className={styles.addressTitle}>
                             Price
@@ -242,7 +249,7 @@ export default function courierDeliveryStatus() {
                 </thead>
                 <tbody id="ShipmentsInProgress">
                     {items_progress.map((item) => (
-                        <tr>
+                        <tr key={item.orderId}>
                             <td className={styles.addressCol}>
                                 {item.name}
                             </td>
@@ -250,7 +257,7 @@ export default function courierDeliveryStatus() {
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.deliveryDate}
+                                {getCleanDate(item.deliveryDate)}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.shipmentAddress}
@@ -259,7 +266,7 @@ export default function courierDeliveryStatus() {
                                 {item.services}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.weight}
+                                {item.weight} kg
                             </td>
                             <td className={styles.statusCol}>
                                 <button className={styles.newShipmentButton} onClick={async () => await deliveredShipment(item)}>
@@ -300,7 +307,7 @@ export default function courierDeliveryStatus() {
                             Services
                         </td>
                         <td className={styles.addressTitle}>
-                            Weight
+                            Weight 
                         </td>
                         <td className={styles.addressTitle}>
                             Price
@@ -309,8 +316,8 @@ export default function courierDeliveryStatus() {
                     </tr>
                 </thead>
                 <tbody id="ShipmentsToAccept">
-                    {items_accepted.map((item) => (
-                        <tr>
+                    {items_done.map((item) => (
+                        <tr key={item.orderId}>
                             <td className={styles.addressCol}>
                                 {item.name}
                             </td>
@@ -318,7 +325,7 @@ export default function courierDeliveryStatus() {
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.pickupDate}
+                                {getCleanDate(item.pickupDate)}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.pickupAddress}
@@ -333,7 +340,7 @@ export default function courierDeliveryStatus() {
                                 {item.services}
                             </td>
                             <td className={styles.deliveryDateCol}>
-                                {item.weight}
+                                {item.weight} kg
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {item.price} €
