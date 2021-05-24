@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 import { api } from "../components/api";
 import OrderForm from "../components/OrderForm";
 import ShipmentTable from "../components/ShipmentTable"
-import AddressForm from "../components/AddressForm";
 
 export default function deliveryStatus() {
 	const [showModal, setShowModal] = React.useState(false);
