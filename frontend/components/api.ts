@@ -87,7 +87,6 @@ class Api {
 			},
 			body: JSON.stringify(data),
 		});
-		console.log(data)
 		return res;
 	}
 
