@@ -5,7 +5,7 @@ export default function Login() {
   return (
     <>
       <Nav />
-      <LoginComponent successRedirect="/delivery-status" />
+      <LoginComponent successRedirect="/delivery-status" courierSuccessRedirect="/courierDeliveryStatus" />
     </>
   );
 }

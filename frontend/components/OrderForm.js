@@ -1,3 +1,4 @@
+  
 import React, {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -37,12 +38,13 @@ function orderShipmentForm({onClickSubmit}) {
 	const [street, setStreet] = React.useState('')
 	const [houseNumber, setHouseNumber] = React.useState('')
 
+	const pickupCity = register("pickupCity",{required: true})
+	const pickupZipCode = register("pickupZipCode",{required: true})
+	const pickupStreet = register("pickupStreet",{required: true})
+	const pickupHouseNumber = register("pickupHouseNumber",{required: true})
+
 	useEffect(()=>{
-		register("pickupCity", { required: true })
-		register("pickupZipCode", { required: true })
-		register("pickupStreet", { required: true })
 		register("weight", {required: true})
-		register("pickupHouseNumber", { required: true })
 		register("services")
 	})
 
@@ -66,13 +68,13 @@ function orderShipmentForm({onClickSubmit}) {
 
 	return (
 		<>
-		<select onChange={(e)=>{  //someone make it pretty, cause i'm dead
+		<select defaultValue={'DEFAULT'} onChange={(e)=>{  //someone make it pretty, cause i'm dead
 				setCity(addresses[e.target.value].city)
 				setZipCode(addresses[e.target.value].zipCode)
 				setStreet(addresses[e.target.value].street)
 				setHouseNumber(addresses[e.target.value].houseNumber)
 			}}>
-		<option value="" disabled selected>Select your address</option>
+		<option key='DEFAULT' value="DEFAULT" disabled>Select your address</option>
 		{addresses.map((address, index) => (
 			<option key={index} value={index}>{address.street}, {address.houseNumber}, {address.city}, {address.zipCode}</option>
 		))}
@@ -92,7 +94,7 @@ function orderShipmentForm({onClickSubmit}) {
 								placeholder="City"
 								onChange={e=>{
 									setCity(e.target.value)
-									setValue(e.target.value)
+									pickupCity.onChange(e)
 									}}
 							/>
 						</div>
@@ -108,7 +110,7 @@ function orderShipmentForm({onClickSubmit}) {
 								placeholder="ZIP Code"
 								onChange={e=>{
 									setZipCode(e.target.value)
-									setValue(e.target.value)
+									pickupZipCode.onChange(e)
 									}}
 							/>
 						</div>
@@ -127,7 +129,7 @@ function orderShipmentForm({onClickSubmit}) {
 								placeholder="Street"
 								onChange={e=>{
 									setStreet(e.target.value)
-									setValue(e.target.value)
+									pickupStreet.onChange(e)
 									}}
 							/>
 						</div>
@@ -143,7 +145,7 @@ function orderShipmentForm({onClickSubmit}) {
 								placeholder="House number"
 								onChange={e=>{
 									setHouseNumber(e.target.value)
-									setValue(e.target.value)
+									pickupHouseNumber.onChange(e)
 									}}
 							/>
 						</div>
@@ -240,7 +242,7 @@ function orderShipmentForm({onClickSubmit}) {
 							</label>
 							<div className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
 							{services.map((service) =>(
-								<div >
+								<div key={service.id}>
 									<label className="mt-2 flex items-center">
 										<input
 										type="checkbox"
@@ -274,7 +276,7 @@ function orderShipmentForm({onClickSubmit}) {
 								</label>
 								<div className="py-2 px-3 rounded-lg border-2 border-purple-300 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
 								{payments.map((payment) =>(
-									<div >
+									<div key={payment.id} >
 										<label className="mt-2 flex items-center">
 											<input
 											{...register("payment", { required: true })}

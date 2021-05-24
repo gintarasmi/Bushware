@@ -23,9 +23,12 @@ namespace Bushware.Controllers
             order.PickupCity = custOrder.pickupCity;
             order.PickupStreet = custOrder.pickupStreet;
             order.PickupHouseNumber = custOrder.pickupHouseNumber;
+            order.PickupZipCode = custOrder.pickupZipCode;
             order.PickupDate = custOrder.pickupDate;
             order.ShipmentCity = custOrder.shipmentCity;
+            order.ShipmentStreet = custOrder.shipmentStreet;
             order.ShipmentHouseNumber = custOrder.shipmentHouseNumber;
+            order.ShipmentZipCode = custOrder.shipmentZipCode;
             order.Services = string.Join(",", custOrder.services);
             order.Payment = custOrder.payment;
             order.Status = "Pending";

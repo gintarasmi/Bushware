@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function Login({ successRedirect }) {
+export default function Login({ successRedirect, courierSuccessRedirect }) {
 	let [err, setErr] = useState(undefined);
 
 	const {
@@ -19,8 +19,9 @@ export default function Login({ successRedirect }) {
 
 	const onSubmit = async (data) => {
 		try {
-			await api.login(data.email, data.password);
-			router.push(successRedirect);
+			await api.login(data.email, data.password, data.isCourier);
+			if(data.isCourier) router.push(courierSuccessRedirect)
+			else router.push(successRedirect);
 		} catch (e) {
 			setErr(e.message);
 		}
@@ -64,6 +65,16 @@ export default function Login({ successRedirect }) {
 							{errors.password && (
 								<span className={styles.error}>Please enter a valid password</span>
 							)}
+						</div>
+
+						<div>
+							<input
+							type="checkbox"
+							id="isCourier"
+							name="isCourier"
+							{...register("isCourier", { required: false })}
+							/>
+							<label htmlFor="email">Login as courier</label>
 						</div>
 
 						<input type="submit" className={styles.submit} value="Login" />

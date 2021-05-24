@@ -1,6 +1,7 @@
 using Bushware.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace Bushware.Controllers
@@ -20,7 +21,7 @@ namespace Bushware.Controllers
             _context = context;
         }
 
-        public record LoginRequest(string email, string password);
+        public record LoginRequest(string email, string password, bool isCourier);
 
         [HttpPost]
         [AllowAnonymous]
@@ -28,13 +29,25 @@ namespace Bushware.Controllers
         {
             MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod());
             using var ctx = _context;
-            var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.email);
-            if (cust == null || cust.Password != req.password)
+            Console.WriteLine(req.isCourier);
+            if (!req.isCourier)
+            {
+                var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.email);
+                if (cust == null || cust.Password != req.password)
+                {
+                    return Unauthorized("Password or email is incorrect");
+                }
+
+                return Ok(_jwt.CreateToken(new UserInfo(cust.Id)));
+            }
+
+            var cour = ctx.Couriers.FirstOrDefault(c => c.Email == req.email);
+            if (cour == null || cour.Password != req.password)
             {
                 return Unauthorized("Password or email is incorrect");
             }
 
-            return Ok(_jwt.CreateToken(new UserInfo(cust.Id)));
+            return Ok(_jwt.CreateToken(new UserInfo(cour.Id, Courier: true)));
         }
 
         public record RegistrationRequest(string Name, string Email, string Password, bool isCourier);
