@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 
-const apiUrl = "https://localhost:44313/api";
+const apiUrl = "https://localhost:5001/api";
 
 export async function fetchJson(
 
@@ -22,6 +22,7 @@ export async function fetchJson(
 class Api {
   _token: string;
   _userId: string;
+  _role: string | string[];
 
   constructor() {
     if (typeof window !== "undefined") {
@@ -39,6 +40,9 @@ class Api {
     window.localStorage.setItem("token", this._token);
     let jwt = jwtDecode(this._token);
     this._userId = (jwt as any).sub;
+    this._role = (jwt as any).role;
+
+    console.log(this._role);
   }
 
   async register(
@@ -156,6 +160,15 @@ class Api {
     });
     return await res.json();
   }
+  async getAllCouriers(): Promise<any> {
+    if (!this.signedIn) throw new Error("Not logged in");
+    let res = await fetch(`${apiUrl}/Couriers`, {
+      headers: {
+        Authorization: `Bearer ${this._token}`,
+      },
+    });
+    return await res.json();
+  }
 
 	async getPayment(): Promise<any> {
 		let res = await fetch(`${apiUrl}/Payment`);
@@ -185,6 +198,10 @@ class Api {
 
 	async deleteCustomer(id: string): Promise<any> {
 		await fetchJson(`${apiUrl}/Customers/` + id, { id }, { method: "DELETE" });
+	}
+
+  async deleteCourier(id: string): Promise<any> {
+		await fetchJson(`${apiUrl}/Couriers/` + id, { id }, { method: "DELETE" });
 	}
 
   logout() {

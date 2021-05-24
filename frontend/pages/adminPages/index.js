@@ -1,13 +1,12 @@
 import Nav from "/components/Nav";
-import styles from "../../styles/Statistics.module.css";
+import styles from "../../styles/Home.module.css";
 
 export default function adminPage() {
   return (
-    <div>
+    <>
       <Nav />
-      <table className={styles.deliveryStatusTable}>
-        <h2 className={styles.tableTitle}>Statistics</h2>
-      </table>
-    </div>
+      <h1 className={styles.description}>You have logged in as an administrator</h1>
+      <img src="admin.png" alt="Administrator" className={styles.img}></img>
+    </>
   );
 }

@@ -5,7 +5,7 @@ export default function Login() {
   return (
     <>
       <Nav />
-      <LoginComponent successRedirect="/adminPages/" />
+      <LoginComponent successRedirect="/adminPages/"/>
     </>
   );
 }

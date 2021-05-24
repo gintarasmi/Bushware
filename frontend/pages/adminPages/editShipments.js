@@ -4,9 +4,11 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { api } from "../../components/api";
 
+function getCleanDate(dateTime){
+  return new Date(dateTime).toLocaleString()
+}
 export default function editShipments() {
 	let [items, setItems] = useState([]);
-	let items_active = items.filter((i) => i.status === "Active");
 
 	useEffect(async () => {
 		setItems(await api.getAllOrders());
@@ -26,14 +28,19 @@ export default function editShipments() {
 						<th className={styles.tableTitle}>All active shipments</th>
 					</tr>
 					<tr>
+            <td className={styles.idTitle}>Shipment ID</td>
 						<td className={styles.addressTitle}>Pickup address</td>
 						<td className={styles.addressTitle}>Delivery address</td>
 						<td className={styles.deliveryDateTitle}>Estimated pickup date</td>
+            <td className={styles.deliveryDateTitle}>Estimated delivery date</td>
+            <td className={styles.servicesTitle}>Services</td>
+            <td className={styles.statusTitle}>Status</td>
 					</tr>
 				</thead>
 				<tbody id="ShipmentsInProgress">
-					{items_active.map((item) => (
-						<tr>
+					{items.map((item) => (
+						<tr key={item.id}>
+              <td className={styles.idCol}>{item.id}</td>
 							<td className={styles.addressCol}>
 								{item.pickupCity +
 									" " +
@@ -52,7 +59,10 @@ export default function editShipments() {
 									" " +
 									item.shipmentZipCode}
 							</td>
-							<td className={styles.deliveryDateCol}>{item.deliveryDate}</td>
+              <td className={styles.deliveryDateCol}>{getCleanDate(item.pickupDate)}</td>
+							<td className={styles.deliveryDateCol}>{getCleanDate(item.deliveryDate)}</td>
+              <td className={styles.servicesCol}>{item.services}</td>
+              <td className={styles.statusCol}>{item.status}</td>
 						</tr>
 					))}
 				</tbody>
