@@ -1,9 +1,10 @@
-import React from 'react'
+import Nav from "./Nav";
 
 export default function Layout({ children }) {
-    return (
-        <>
-            {children}
-        </>
-    )
+	return (
+		<>
+			<Nav />
+			<main>{children}</main>
+		</>
+	);
 }

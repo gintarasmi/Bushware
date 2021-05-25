@@ -1,4 +1,3 @@
-import Nav from "/components/Nav";
 import Head from "next/head";
 import styles from "../../styles/Accounts.module.css";
 import { useEffect, useState } from "react";
@@ -45,19 +44,20 @@ function DeleteUserForm({ customerID, onCancel, onConfirm }) {
 
 export default function editAccounts() {
 	const [customerToDelete, setCustomerToDelete] = useState();
+	const [courierToDelete, setCourierToDelete] = useState();
 	let [customers, setCustomers] = useState([]);
-  let [couriers, setCouriers] = useState([]);
+	let [couriers, setCouriers] = useState([]);
 	useEffect(async () => {
 		setCustomers(await api.getAllCustomers());
-    setCouriers(await api.getAllCouriers());
+		setCouriers(await api.getAllCouriers());
 	}, []);
 
 	return (
 		<>
-			<Nav />
 			<Head>
 				<title>User edit page</title>
 			</Head>
+
 			<table className={styles.registeredAccountsTable}>
 				<thead>
 					<tr>
@@ -90,7 +90,7 @@ export default function editAccounts() {
 					))}
 				</tbody>
 			</table>
-      <table className={styles.registeredCouriersTable}>
+			<table className={styles.registeredCouriersTable}>
 				<thead>
 					<tr>
 						<th className={styles.tableTitle}>Registered couriers</th>
@@ -103,16 +103,16 @@ export default function editAccounts() {
 					</tr>
 				</thead>
 				<tbody id="RegisteredCouriers">
-					{couriers.map((customer) => (
-						<tr key={customer.id}>
-							<td className={styles.idCol}>{customer.id}</td>
-							<td className={styles.nameCol}>{customer.name}</td>
-							<td className={styles.emailCol}>{customer.email}</td>
+					{couriers.map((courier) => (
+						<tr key={courier.id}>
+							<td className={styles.idCol}>{courier.id}</td>
+							<td className={styles.nameCol}>{courier.name}</td>
+							<td className={styles.emailCol}>{courier.email}</td>
 							<td>
 								<button
 									className={styles.deleteUserButton}
 									onClick={() => {
-										setCustomerToDelete(customer);
+										setCourierToDelete(courier);
 									}}
 								>
 									Delete courier
@@ -130,6 +130,17 @@ export default function editAccounts() {
 						await api.deleteCustomer(customerToDelete.id);
 						setCustomers(customers.filter((c) => c.id !== customerToDelete.id));
 						setCustomerToDelete(undefined);
+					}}
+				/>
+			)}
+			{courierToDelete && (
+				<DeleteUserForm
+					customerID={courierToDelete.id}
+					onCancel={() => setCourierToDelete(undefined)}
+					onConfirm={async () => {
+						await api.deleteCourier(courierToDelete.id);
+						setCouriers(couriers.filter((c) => c.id !== courierToDelete.id));
+						setCourierToDelete(undefined);
 					}}
 				/>
 			)}
