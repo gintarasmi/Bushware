@@ -31,6 +31,7 @@ function orderShipmentForm({ onClickSubmit }) {
 	const [services, setServices] = React.useState([]);
 	const [payments, setPayments] = React.useState([]);
 	const [addresses, setAddresses] = React.useState([]);
+	const [error, setError] = React.useState([]);
 
 	const [city, setCity] = React.useState("");
 	const [zipCode, setZipCode] = React.useState("");
@@ -55,13 +56,10 @@ function orderShipmentForm({ onClickSubmit }) {
 
 	const onSubmit = async (data) => {
 		data["price"] = price;
-		console.log(JSON.stringify(data));
-		await api.postCustOrder(data).then((res) => {
-			if (res.status === 200) {
-				router.reload();
-			} else console.log(res.status);
-		});
-	};
+		const status = await api.postCustOrder(data);
+		if(status === 200) router.reload();
+		else setError(status);
+	}
 
 	const min = tommorow();
 

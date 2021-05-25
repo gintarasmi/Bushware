@@ -76,6 +76,8 @@ namespace Bushware
         public int Package { get; set; }
         public int Payment { get; set; }
         public string Services { get; set; }
+        [Timestamp]
+        public byte[] VersionId { get; set; }
     }
     public class Package
     {

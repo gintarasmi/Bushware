@@ -2,17 +2,21 @@ import styles from "../styles/Shipments.module.css";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { api } from "../components/api";
+import {useRouter} from 'next/router'
 
 async function acceptDelivery(item) {
-	await api.acceptOrder(item.orderId);
+	const status = await api.acceptOrder(item.orderId);
+	return status;
 }
 
 async function pickedUpDelivery(item) {
-	await api.pickedUpDelivery(item.orderId);
+	const status = await api.pickedUpDelivery(item.orderId);
+	return status;
 }
 
 async function deliver(item) {
-	await api.deliveredShipment(item.orderId);
+	const status = await api.deliveredShipment(item.orderId);
+	return status;
 }
 
 function getCleanDate(dateTime) {
@@ -20,6 +24,7 @@ function getCleanDate(dateTime) {
 }
 
 function ItemsTable({ title, items, action, actionTitle }) {
+	const router = useRouter();
 	return (
 		<>
 			<h2 className={styles.tableTitle}>{title}</h2>
@@ -53,7 +58,10 @@ function ItemsTable({ title, items, action, actionTitle }) {
 
 							{action && (
 								<td className={styles.servicesCol}>
-									<button className={styles.ShipmentButton} onClick={action}>
+									<button className={styles.ShipmentButton} onClick={async ()=> {
+																				const status = await action(item)
+																				if(status == 204) router.reload();
+																			}}>
 										{actionTitle}
 									</button>
 								</td>
