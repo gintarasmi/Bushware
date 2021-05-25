@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 
-const apiUrl = "https://localhost:5001/api";
+const apiUrl = "https://localhost:44313/api";
 
 class Api {
 	_token: string;
@@ -58,8 +58,9 @@ class Api {
 		return res.json();
 	}
 
-	async postCustOrder(data: any): Promise<void> {
-		await this._fetch(`CustOrder`, data, { method: "POST" });
+	async postCustOrder(data: any): Promise<any> {
+		const res = await this._fetch(`CustOrder`, data, { method: "POST" });
+		return res.status;
 	}
 
 	async getCourierOrders(): Promise<any> {
@@ -67,16 +68,19 @@ class Api {
 		return res.json();
 	}
 
-	async acceptOrder(id: number): Promise<void> {
-		await this._fetch(`Orders/AcceptOrder/${id}`, undefined, { method: "PUT" });
+	async acceptOrder(id: number): Promise<any> {
+		const res = await this._fetch(`Orders/AcceptOrder/${id}`, undefined, { method: "PUT" });
+		return res.status;
 	}
 
-	async pickedUpDelivery(id: number): Promise<void> {
-		await this._fetch(`Orders/PickedUpOrder/${id}`, undefined, { method: "PUT" });
+	async pickedUpDelivery(id: number): Promise<any> {
+		const res = await this._fetch(`Orders/PickedUpOrder/${id}`, undefined, { method: "PUT" });
+		return res.status;
 	}
 
-	async deliveredShipment(id: number): Promise<void> {
-		await this._fetch(`Orders/DeliveredOrder/${id}`, undefined, { method: "PUT" });
+	async deliveredShipment(id: number): Promise<any> {
+		const res = await this._fetch(`Orders/DeliveredOrder/${id}`, undefined, { method: "PUT" });
+		return res.status;
 	}
 
 	async getServices(): Promise<any> {

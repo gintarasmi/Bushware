@@ -10,7 +10,7 @@ export default function deliveryStatus() {
 	const [items, setItems] = React.useState([]);
 	let items_done = items.filter((i) => i.status === "Done");
 	let items_progress = items.filter((i) => i.status === "In progress");
-	let items_pickup = items.filter((i) => i.status === "Accepted");
+	let items_pickup = items.filter((i) => (i.status === "Accepted" || i.status === "Pending"));
 
 	useEffect(async () => {
 		setItems(await api.getOrders());
