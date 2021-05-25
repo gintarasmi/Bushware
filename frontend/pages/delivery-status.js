@@ -1,25 +1,19 @@
-import Nav from "/components/UserNav";
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { api } from "../components/api";
 import OrderForm from "../components/OrderForm";
-import ShipmentTable from "../components/ShipmentTable"
+import ShipmentTable from "../components/ShipmentTable";
 
 export default function deliveryStatus() {
 	const [showModal, setShowModal] = React.useState(false);
 	const [items, setItems] = React.useState([]);
-	let items_done = [];
-	let items_progress = [];
-	let items_pickup = [];
-	for (let i in items) {
-		if (items[i].status === "Done") items_done.push(items[i]);
-		else if (items[i].status === "In progress") items_progress.push(items[i]);
-		else items_pickup.push(items[i]);
-	}
+	let items_done = items.filter((i) => i.status === "Done");
+	let items_progress = items.filter((i) => i.status === "In progress");
+	let items_pickup = items.filter((i) => i.status === "Accepted");
 
 	useEffect(async () => {
-		setItems(await api.getOrders())
+		setItems(await api.getOrders());
 	}, []);
 
 	return (
@@ -27,12 +21,8 @@ export default function deliveryStatus() {
 			<Head>
 				<title>Delivery status page</title>
 			</Head>
-			<Nav/>
-			<button
-			className={styles.newShipmentButton}
-			onClick={() => setShowModal(true)}
-			>
-			New shipment
+			<button className={styles.newShipmentButton} onClick={() => setShowModal(true)}>
+				New shipment
 			</button>
 			{showModal && (
 				<>
@@ -59,9 +49,9 @@ export default function deliveryStatus() {
 					<div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
 				</>
 			)}
-			<ShipmentTable tableName="Shipments to pickup" items={items_pickup}/>
-			<ShipmentTable tableName="Shipments in progress" items={items_progress}/>
-			<ShipmentTable tableName="Past shipments" items={items_done}/>
-	</>		
+			<ShipmentTable tableName="Shipments to pickup" items={items_pickup} />
+			<ShipmentTable tableName="Shipments in progress" items={items_progress} />
+			<ShipmentTable tableName="Past shipments" items={items_done} />
+		</>
 	);
 }
