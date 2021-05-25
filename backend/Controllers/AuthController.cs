@@ -29,7 +29,6 @@ namespace Bushware.Controllers
         {
             MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod());
             using var ctx = _context;
-            Console.WriteLine(req.isCourier);
             if (!req.isCourier)
             {
                 var cust = ctx.Customers.FirstOrDefault(c => c.Email == req.email);
