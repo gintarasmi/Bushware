@@ -18,6 +18,7 @@ function AddressForm() {
         console.log(JSON.stringify(data));
         try{
             await api.postAddress(data).then(res => console.log(res))
+            router.push("/delivery-status")
             
         } catch (e){
             setErr(e.message);

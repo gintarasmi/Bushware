@@ -21,6 +21,15 @@
     width: 95%;
     border-collapse: collapse;
   }
+  .registeredCouriersTable {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+    padding: 1rem 1rem;
+    width: 95%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
   
   .tableTitle {
     text-align: left;

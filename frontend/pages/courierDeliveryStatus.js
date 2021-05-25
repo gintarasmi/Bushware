@@ -1,4 +1,5 @@
-import styles from "../styles/Home.module.css";
+import Nav from "/components/CourierNav";
+import styles from "../styles/Shipments.module.css";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -60,7 +61,9 @@ export default function courierDeliveryStatus() {
             <Head>
                 <title>Courier delivery status page</title>
             </Head>
-            <h1 className={styles.subtitle}>Bush Delivery</h1>
+            
+            <Nav/>
+
             <table className={styles.deliveryStatusTable}>
                 <thead>
                     <tr>
@@ -69,13 +72,13 @@ export default function courierDeliveryStatus() {
                         </th>
                     </tr>
                     <tr>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Name
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Phone number
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.deliveryDateTitle}>
                             Pickup Date
                         </td>
                         <td className={styles.addressTitle}>
@@ -84,53 +87,53 @@ export default function courierDeliveryStatus() {
                         <td className={styles.addressTitle}>
                             Delivery address
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Payment Method
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Services
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.statusTitle}>
                             Weight
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Price
                         </td>
-                        <td className={styles.statusTitle}></td>
+                        <td className={styles.servicesTitle}></td>
                     </tr>
                 </thead>
                 <tbody id="ShipmentsToAccept">
                     {items_accept.map((item) => (
                         <tr key={item.orderId}>
-                            <td className={styles.addressCol}>
+                            <td className={styles.idCol}>
                                 {item.name}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.idCol}>
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {getCleanDate(item.pickupDate)}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.pickupAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.shipmentAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.paymentMethod}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.services}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.statusCol}>
                                 {item.weight} kg
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.price} €
                             </td>
-                            <td className={styles.statusCol}>
-                                <button className={styles.newShipmentButton} onClick={async () => await acceptDelivery(item)}>
+                            <td className={styles.servicesCol}>
+                                <button className={styles.ShipmentButton} onClick={async () => await acceptDelivery(item)}>
                                     Accept delivery
                                 </button>
                             </td>
@@ -146,13 +149,13 @@ export default function courierDeliveryStatus() {
                         </th>
                     </tr>
                     <tr>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Name
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Phone number
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.deliveryDateTitle}>
                             Pickup Date
                         </td>
                         <td className={styles.addressTitle}>
@@ -161,53 +164,53 @@ export default function courierDeliveryStatus() {
                         <td className={styles.addressTitle}>
                             Delivery address
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Payment Method
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Services
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.statusTitle}>
                             Weight
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.statusTitle}>
                             Price
                         </td>
-                        <td className={styles.statusTitle}></td>
+                        <td className={styles.servicesTitle}></td>
                     </tr>
                 </thead>
                 <tbody id="ShipmentsToPickup">
                     {items_pickup.map((item) => (
                         <tr key={item.orderId}>
-                            <td className={styles.addressCol}>
+                            <td className={styles.idCol}>
                                 {item.name}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.idCol}>
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {getCleanDate(item.pickupDate)}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.pickupAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.shipmentAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.paymentMethod}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.services}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.statusCol}>
                                 {item.weight} kg
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.statusCol}>
                                 {item.price} €
                             </td>
-                            <td className={styles.statusCol}>
-                                <button className={styles.newShipmentButton} onClick={async () => await pickedUpDelivery(item)}>
+                            <td className={styles.servicesCol}>
+                                <button className={styles.ShipmentButton} onClick={async () => await pickedUpDelivery(item)}>
                                     Delivery picked up
                                 </button>
                             </td>
@@ -223,53 +226,56 @@ export default function courierDeliveryStatus() {
                         </th>
                     </tr>
                     <tr>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Name
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Phone number
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.deliveryDateTitle}>
                             Estimated Delivery Date
                         </td>
                         <td className={styles.addressTitle}>
                             Delivery address
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Services
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.statusTitle}>
                             Weight 
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.statusTitle}>
                             Price
                         </td>
-                        <td className={styles.statusTitle}></td>
+                        <td className={styles.servicesTitle}></td>
                     </tr>
                 </thead>
                 <tbody id="ShipmentsInProgress">
                     {items_progress.map((item) => (
                         <tr key={item.orderId}>
-                            <td className={styles.addressCol}>
+                            <td className={styles.idCol}>
                                 {item.name}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.idCol}>
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {getCleanDate(item.deliveryDate)}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.shipmentAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.services}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.statusCol}>
                                 {item.weight} kg
                             </td>
                             <td className={styles.statusCol}>
-                                <button className={styles.newShipmentButton} onClick={async () => await deliveredShipment(item)}>
+                                {item.price} €
+                            </td>
+                            <td className={styles.servicesCol}>
+                                <button className={styles.ShipmentButton} onClick={async () => await deliveredShipment(item)}>
                                     Shipment delivered
                                 </button>
                             </td>
@@ -285,13 +291,13 @@ export default function courierDeliveryStatus() {
                         </th>
                     </tr>
                     <tr>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Name
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.idTitle}>
                             Phone number
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.deliveryDateTitle}>
                             Pickup Date
                         </td>
                         <td className={styles.addressTitle}>
@@ -300,49 +306,48 @@ export default function courierDeliveryStatus() {
                         <td className={styles.addressTitle}>
                             Delivery address
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Payment Method
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Services
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.statusTitle}>
                             Weight 
                         </td>
-                        <td className={styles.addressTitle}>
+                        <td className={styles.servicesTitle}>
                             Price
                         </td>
-                        <td className={styles.statusTitle}></td>
                     </tr>
                 </thead>
                 <tbody id="ShipmentsToAccept">
                     {items_done.map((item) => (
                         <tr key={item.orderId}>
-                            <td className={styles.addressCol}>
+                            <td className={styles.idCol}>
                                 {item.name}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.idCol}>
                                 {item.phoneNumber}
                             </td>
                             <td className={styles.deliveryDateCol}>
                                 {getCleanDate(item.pickupDate)}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.pickupAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.addressCol}>
                                 {item.shipmentAddress}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.paymentMethod}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.services}
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.statusCol}>
                                 {item.weight} kg
                             </td>
-                            <td className={styles.deliveryDateCol}>
+                            <td className={styles.servicesCol}>
                                 {item.price} €
                             </td>
                         </tr>

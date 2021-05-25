@@ -46,8 +46,10 @@ function DeleteUserForm({ customerID, onCancel, onConfirm }) {
 export default function editAccounts() {
 	const [customerToDelete, setCustomerToDelete] = useState();
 	let [customers, setCustomers] = useState([]);
+  let [couriers, setCouriers] = useState([]);
 	useEffect(async () => {
 		setCustomers(await api.getAllCustomers());
+    setCouriers(await api.getAllCouriers());
 	}, []);
 
 	return (
@@ -59,7 +61,7 @@ export default function editAccounts() {
 			<table className={styles.registeredAccountsTable}>
 				<thead>
 					<tr>
-						<th className={styles.tableTitle}>Registered accounts</th>
+						<th className={styles.tableTitle}>Registered users</th>
 					</tr>
 					<tr>
 						<td className={styles.idTitle}>ID</td>
@@ -82,6 +84,38 @@ export default function editAccounts() {
 									}}
 								>
 									Delete user
+								</button>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+      <table className={styles.registeredCouriersTable}>
+				<thead>
+					<tr>
+						<th className={styles.tableTitle}>Registered couriers</th>
+					</tr>
+					<tr>
+						<td className={styles.idTitle}>ID</td>
+						<td className={styles.nameTitle}>Name</td>
+						<td className={styles.emailTitle}>Email</td>
+						<td className={styles.statusTitle}></td>
+					</tr>
+				</thead>
+				<tbody id="RegisteredCouriers">
+					{couriers.map((customer) => (
+						<tr key={customer.id}>
+							<td className={styles.idCol}>{customer.id}</td>
+							<td className={styles.nameCol}>{customer.name}</td>
+							<td className={styles.emailCol}>{customer.email}</td>
+							<td>
+								<button
+									className={styles.deleteUserButton}
+									onClick={() => {
+										setCustomerToDelete(customer);
+									}}
+								>
+									Delete courier
 								</button>
 							</td>
 						</tr>

@@ -79,8 +79,8 @@ namespace Bushware.Controllers
                                          select new
                                          {
                                              orderId = order.Id,
-                                             pickupAddress = order.PickupStreet + ' ' + order.PickupHouseNumber + ',' + order.PickupCity + ',' + order.PickupZipCode,
-                                             shipmentAddress = order.ShipmentStreet + ' ' + order.ShipmentHouseNumber + ',' + order.ShipmentCity + ',' + order.ShipmentZipCode,
+                                             pickupAddress = order.PickupStreet + ' ' + order.PickupHouseNumber + ", " + order.PickupCity + ", " + order.PickupZipCode,
+                                             shipmentAddress = order.ShipmentStreet + ' ' + order.ShipmentHouseNumber + ", " + order.ShipmentCity + ", " + order.ShipmentZipCode,
                                              pickupDate = order.PickupDate,
                                              status = order.Status,
                                              deliveryDate = order.DeliveryDate,
@@ -221,8 +221,8 @@ namespace Bushware.Controllers
                                    select new
                                    {
                                        orderId = order.Id,
-                                       pickupAddress = order.PickupStreet + ' ' + order.PickupHouseNumber + ',' + order.PickupCity + ',' + order.PickupZipCode,
-                                       shipmentAddress = order.ShipmentStreet + ' ' + order.ShipmentHouseNumber + ',' + order.ShipmentCity + ',' + order.ShipmentZipCode,
+                                       pickupAddress = order.PickupStreet + ' ' + order.PickupHouseNumber + ", " + order.PickupCity + ", " + order.PickupZipCode,
+                                       shipmentAddress = order.ShipmentStreet + ' ' + order.ShipmentHouseNumber + ", " + order.ShipmentCity + ", " + order.ShipmentZipCode,
                                        pickupDate = order.PickupDate,
                                        name = customer.Name,
                                        phoneNumber = customer.PhoneNumber,

@@ -1,4 +1,4 @@
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Shipments.module.css";
 
 function ShipmentTable({tableName, items}){
     let pastShipments = false 
@@ -11,11 +11,11 @@ function ShipmentTable({tableName, items}){
                 </tr>
                 <tr>
                     <td className={styles.addressTitle}>Pickup Address</td>
-                    <td className={styles.deliveryDateTitle}>Shipment Address</td>
-                    <td className={styles.addressTitle}>Pickup Date</td>
+                    <td className={styles.addressTitle}>Shipment Address</td>
+                    <td className={styles.deliveryDateTitle}>Pickup Date</td>
                     {pastShipments ? 
-                    (<td className={styles.addressTitle}>Delivery Date</td>) :
-                    (<td className={styles.addressTitle}>Estimated Delivery Date</td>)}
+                    (<td className={styles.deliveryDateTitle}>Delivery Date</td>) :
+                    (<td className={styles.deliveryDateTitle}>Estimated Delivery Date</td>)}
                     <td className={styles.statusTitle}>Services</td>
                     <td className={styles.statusTitle}>Payment Method</td>
                     <td className={styles.statusTitle}>Weight</td>
