@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
+using Bushware.Utilities;
 
 namespace Bushware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ActionFilterLogger]
     public class CustomersController : ControllerBase
     {
         private readonly DeliveryDBContext _context;

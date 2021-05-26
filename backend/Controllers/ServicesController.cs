@@ -8,6 +8,7 @@ namespace Bushware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ActionFilterLogger]
     public class ServicesController : ControllerBase
     {
         private readonly DeliveryDBContext _context;
@@ -21,7 +22,6 @@ namespace Bushware.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Services>>> GetServices()
         {
-            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             return await _context.Services.ToListAsync();
         }
 

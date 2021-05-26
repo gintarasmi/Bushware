@@ -1,7 +1,12 @@
-﻿namespace Bushware.Utilities
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Bushware.Utilities
 {
     public interface ILogger
     {
-        void ToLog(int logType, string className, string methodName, string name = "anon", string role = "");
+        void ToLog(int logType, string message);
     }
 }

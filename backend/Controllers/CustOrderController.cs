@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Bushware.Utilities;
 
 namespace Bushware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ActionFilterLogger]
     public class CustOrderController : ControllerBase {
 
         private readonly DeliveryDBContext _context;

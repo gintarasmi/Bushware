@@ -9,6 +9,7 @@ namespace Bushware.Controllers
 
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [ActionFilterLogger]
     public class AuthController : ControllerBase
     {
         private readonly DeliveryDBContext _context;
@@ -27,7 +28,6 @@ namespace Bushware.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginRequest req)
         {
-            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod());
             using var ctx = _context;
             if (!req.isCourier)
             {
@@ -55,7 +55,6 @@ namespace Bushware.Controllers
         [AllowAnonymous]
         public IActionResult Register([FromBody] RegistrationRequest req)
         {
-            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod());
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
             if (req.Password.Length < 6)

@@ -27,9 +27,8 @@ namespace Bushware.Utilities
             return MethodLogger.logger;
         }
 
-        public void ToLog(int logType, string className, string methodName, string name = "anon", string role = "")
+        public void ToLog(int logType, string message)
         {
-            string message = "Class:" + className + " Method:" + methodName + " Name:" + name + " Role:" + role;
             switch (logType)
             {
                 case 0:
