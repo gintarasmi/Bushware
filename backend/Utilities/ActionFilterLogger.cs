@@ -23,11 +23,8 @@ namespace Bushware.Utilities
             var uRole = httpContext.User.Identity.AuthenticationType;
             var method = httpContext.Request.Method;
             var path = httpContext.Request.Path.Value;
-            var message = String.Format("{0} path: {1} method: {2} user: {3} role: {4}", DateTime.Now, path, method, uName, uRole);
-            using (StreamWriter outputFile = new StreamWriter("log.txt", true))
-            {
-                outputFile.WriteLine(message);
-            }
+            var message = String.Format("Path: {0} method: {1} user: {2} role: {3}", path, method, uName, uRole);
+            MethodLogger.GetInstance().ToLog(2, message);
         }
     }
 }
