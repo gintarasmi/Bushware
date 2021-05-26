@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bushware.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace Bushware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ActionFilterLogger]
     public class PackageController : ControllerBase
     {
         private readonly DeliveryDBContext _context;

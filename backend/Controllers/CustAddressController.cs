@@ -11,6 +11,7 @@ namespace Bushware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ActionFilterLogger]
     public class CustAddressController : ControllerBase
     {
 
@@ -24,7 +25,6 @@ namespace Bushware.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAdresses()
         {
-            MethodLogger.GetInstance().ToLog(2, this.GetType().Name, MethodLogger.GetCurrentMethod(), User.Identity.Name, User.Identity.AuthenticationType);
             return await _context.Addresses.ToListAsync();
         }
 
